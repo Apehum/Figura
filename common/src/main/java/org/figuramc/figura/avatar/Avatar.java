@@ -144,7 +144,7 @@ public class Avatar {
     }
 
     public Avatar(Entity entity) {
-        this(entity.getUUID(), entity.getType(), entity.getName().getString());
+        this(EntityUtils.getEntityUUIDSync(entity), entity.getType(), entity.getName().getString());
     }
 
     public void load(CompoundTag nbt) {

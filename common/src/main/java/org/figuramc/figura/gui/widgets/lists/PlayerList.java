@@ -18,6 +18,7 @@ import org.figuramc.figura.gui.widgets.permissions.CategoryPermPackElement;
 import org.figuramc.figura.gui.widgets.permissions.PlayerPermPackElement;
 import org.figuramc.figura.permissions.PermissionManager;
 import org.figuramc.figura.permissions.PermissionPack;
+import org.figuramc.figura.utils.EntityUtils;
 import org.figuramc.figura.utils.FiguraIdentifier;
 import org.figuramc.figura.utils.FiguraText;
 import org.figuramc.figura.utils.ui.UIHelper;
@@ -157,6 +158,9 @@ public class PlayerList extends AbstractList {
         ClientPacketListener connection = Minecraft.getInstance().getConnection();
         List<UUID> playerList = connection == null ? List.of() : new ArrayList<>(connection.getOnlinePlayerIds());
         for (UUID uuid : playerList) {
+            uuid = EntityUtils.getPlayerOnlineUUIDSync(uuid);
+            if (uuid == null) continue;
+
             // get player
             PlayerInfo player = connection.getPlayerInfo(uuid);
             if (player == null)
@@ -230,7 +234,8 @@ public class PlayerList extends AbstractList {
     }
 
     private void selectLocalPlayer() {
-        PlayerPermPackElement local = Minecraft.getInstance().player != null ? players.get(Minecraft.getInstance().player.getUUID()) : null;
+        var playerUUID = EntityUtils.getEntityUUIDSync(Minecraft.getInstance().player);
+        PlayerPermPackElement local = Minecraft.getInstance().player != null ? players.get(playerUUID) : null;
         if (local != null) {
             local.onPress();
         } else {

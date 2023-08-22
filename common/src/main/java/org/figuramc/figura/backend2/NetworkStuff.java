@@ -21,10 +21,7 @@ import org.figuramc.figura.font.Emojis;
 import org.figuramc.figura.gui.FiguraToast;
 import org.figuramc.figura.permissions.PermissionManager;
 import org.figuramc.figura.permissions.Permissions;
-import org.figuramc.figura.utils.FiguraText;
-import org.figuramc.figura.utils.RefilledNumber;
-import org.figuramc.figura.utils.TextUtils;
-import org.figuramc.figura.utils.Version;
+import org.figuramc.figura.utils.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.ByteArrayOutputStream;
@@ -115,6 +112,9 @@ public class NetworkStuff {
 
         List<UUID> unsub = new ArrayList<>(SUBSCRIPTIONS);
         for (UUID uuid : connection.getOnlinePlayerIds()) {
+            uuid = EntityUtils.getPlayerOnlineUUID(uuid).getNow(null);
+            if (uuid == null) continue;
+
             unsub.remove(uuid);
             if (!SUBSCRIPTIONS.contains(uuid)) {
                 SUBSCRIPTIONS.add(uuid);

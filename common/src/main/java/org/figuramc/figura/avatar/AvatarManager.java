@@ -150,7 +150,8 @@ public class AvatarManager {
         if (panic || Minecraft.getInstance().level == null || entity == null)
             return null;
 
-        UUID uuid = entity.getUUID();
+        UUID uuid = EntityUtils.getEntityUUID(entity).getNow(null);
+        if (uuid == null) return null;
 
         // load from player (fetch backend) if is a player
         if (entity instanceof Player)

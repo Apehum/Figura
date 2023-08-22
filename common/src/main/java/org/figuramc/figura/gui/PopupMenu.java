@@ -21,6 +21,7 @@ import org.figuramc.figura.math.vector.FiguraVec3;
 import org.figuramc.figura.math.vector.FiguraVec4;
 import org.figuramc.figura.permissions.PermissionManager;
 import org.figuramc.figura.permissions.PermissionPack;
+import org.figuramc.figura.utils.EntityUtils;
 import org.figuramc.figura.utils.FiguraIdentifier;
 import org.figuramc.figura.utils.FiguraText;
 import org.figuramc.figura.utils.MathUtils;
@@ -81,7 +82,11 @@ public class PopupMenu {
             return;
         }
 
-        id = entity.getUUID();
+        id = EntityUtils.getEntityUUID(entity).getNow(null);
+        if (id == null) {
+            return;
+        }
+
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || (entity.isInvisibleTo(minecraft.player) && entity != minecraft.player)) {
             entity = null;

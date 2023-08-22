@@ -56,7 +56,7 @@ public class EntityAPI<T extends Entity> {
 
     public EntityAPI(T entity) {
         this.entity = entity;
-        entityUUID = entity.getUUID();
+        entityUUID = EntityUtils.getEntityUUIDSync(entity);
     }
 
     public static EntityAPI<?> wrap(Entity e) {

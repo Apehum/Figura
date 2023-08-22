@@ -16,6 +16,7 @@ import org.figuramc.figura.math.matrix.FiguraMat4;
 import org.figuramc.figura.math.vector.FiguraVec2;
 import org.figuramc.figura.math.vector.FiguraVec3;
 import org.figuramc.figura.math.vector.FiguraVec4;
+import org.figuramc.figura.utils.EntityUtils;
 import org.figuramc.figura.utils.LuaUtils;
 import org.luaj.vm2.LuaError;
 
@@ -68,7 +69,11 @@ public class RendererAPI {
 
     private static boolean checkCameraOwner(UUID entity) {
         Entity e = Minecraft.getInstance().getCameraEntity();
-        return e != null && e.getUUID().equals(entity);
+
+        var cameraUUID = EntityUtils.getEntityUUID(e).getNow(null);
+        if (cameraUUID == null) return false;
+
+        return e != null && cameraUUID.equals(entity);
     }
 
     @LuaWhitelist

@@ -20,6 +20,7 @@ import org.figuramc.figura.ducks.SkullBlockRendererAccessor;
 import org.figuramc.figura.lua.api.vanilla_model.VanillaModelPart;
 import org.figuramc.figura.math.matrix.FiguraMat4;
 import org.figuramc.figura.model.rendering.EntityRenderMode;
+import org.figuramc.figura.utils.EntityUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -38,7 +39,11 @@ public abstract class ItemInHandRendererMixin {
 
     @Inject(method = "renderHandsWithItems", at = @At("HEAD"))
     private void onRenderHandsWithItems(float tickDelta, PoseStack matrices, MultiBufferSource.BufferSource vertexConsumers, LocalPlayer player, int light, CallbackInfo ci) {
-        avatar = AvatarManager.getAvatarForPlayer(player.getUUID());
+        var playerUUID = EntityUtils.getEntityUUID(player).getNow(null);
+        if (playerUUID == null)
+            return;
+
+        avatar = AvatarManager.getAvatarForPlayer(playerUUID);
         if (avatar == null)
             return;
 
